@@ -11,6 +11,7 @@
 
 import os
 import re
+import html
 import json
 import time
 import urllib.request
@@ -18,6 +19,7 @@ import urllib.parse
 import urllib.error
 from pathlib import Path
 from dataclasses import dataclass
+from difflib import SequenceMatcher
 from typing import Optional
 import ssl
 
@@ -69,16 +71,31 @@ class SemanticScholarAPI:
             "fields": "title,authors,year,openAccessPdf,externalIds,abstract"
         })
         url = f"{self.BASE_URL}/paper/search?{params}"
-        
-        try:
-            req = urllib.request.Request(url, headers=self.headers)
-            with urllib.request.urlopen(req, timeout=30, context=SSL_CONTEXT) as response:
-                data = json.loads(response.read().decode('utf-8'))
-        except urllib.error.HTTPError as e:
-            print(f"⚠️  Semantic Scholar API 错误: {e.code}")
-            return []
-        except Exception as e:
-            print(f"⚠️  请求失败: {e}")
+
+        last_error: Optional[Exception] = None
+        for attempt in range(1, 5):
+            try:
+                req = urllib.request.Request(url, headers=self.headers)
+                with urllib.request.urlopen(req, timeout=30, context=SSL_CONTEXT) as response:
+                    data = json.loads(response.read().decode('utf-8'))
+                last_error = None
+                break
+            except urllib.error.HTTPError as e:
+                last_error = e
+                if e.code == 429 and attempt < 5:
+                    retry_after = e.headers.get("Retry-After") if getattr(e, "headers", None) else None
+                    wait_s = int(retry_after) if retry_after and str(retry_after).isdigit() else min(2**attempt, 30)
+                    print(f"⚠️  Semantic Scholar 触发限流(429)，等待 {wait_s}s 后重试... ({attempt}/5)")
+                    time.sleep(wait_s)
+                    continue
+                print(f"⚠️  Semantic Scholar API 错误: {e.code}")
+                return []
+            except Exception as e:
+                last_error = e
+                break
+
+        if last_error is not None:
+            print(f"⚠️  请求失败: {last_error}")
             return []
         
         papers = []
@@ -90,6 +107,8 @@ class SemanticScholarAPI:
             pdf_url = None
             if item.get("openAccessPdf"):
                 pdf_url = item["openAccessPdf"].get("url")
+            if not pdf_url and arxiv_id:
+                pdf_url = f"https://arxiv.org/pdf/{arxiv_id}.pdf"
             
             papers.append(Paper(
                 title=item.get("title", ""),
@@ -178,40 +197,90 @@ class PaperDownloader:
     
     def sanitize_filename(self, name: str) -> str:
         """清理文件名，移除非法字符"""
+        name = html.unescape(name)
         name = re.sub(r'[<>:"/\\|?*]', '', name)
         name = re.sub(r'\s+', '_', name)
         if len(name) > 150:
             name = name[:150]
         return name
+
+    @staticmethod
+    def _normalize_title(text: str) -> str:
+        text = html.unescape(text or "")
+        text = text.lower()
+        text = re.sub(r'\s+', ' ', text)
+        text = re.sub(r'[^a-z0-9 ]+', ' ', text)
+        return ' '.join(text.split())
+
+    @classmethod
+    def _title_similarity(cls, a: str, b: str) -> float:
+        return SequenceMatcher(None, cls._normalize_title(a), cls._normalize_title(b)).ratio()
+
+    @classmethod
+    def _token_coverage(cls, query: str, candidate: str) -> float:
+        query_tokens = {t for t in cls._normalize_title(query).split() if len(t) > 2}
+        if not query_tokens:
+            return 0.0
+        candidate_tokens = set(cls._normalize_title(candidate).split())
+        return len(query_tokens & candidate_tokens) / len(query_tokens)
+
+    def _find_existing_pdf(self, title: str, subfolder: str = "") -> Optional[Path]:
+        target_dir = self.output_dir / subfolder if subfolder else self.output_dir
+        if not target_dir.exists():
+            return None
+
+        best_path: Optional[Path] = None
+        best_score = 0.0
+        for pdf_path in target_dir.glob("*.pdf"):
+            cand_title = pdf_path.stem.replace("_", " ")
+            sim = self._title_similarity(title, cand_title)
+            cov = self._token_coverage(title, cand_title)
+            score = (sim + cov) / 2
+            if score > best_score:
+                best_score = score
+                best_path = pdf_path
+
+        if best_path and best_score >= 0.7:
+            return best_path
+        return None
     
     def search_paper(self, title: str) -> Optional[Paper]:
         """搜索论文，优先使用Semantic Scholar，失败则用arXiv"""
         print(f"\n🔍 搜索: {title[:60]}...")
         
-        # 先尝试 Semantic Scholar
-        papers = self.semantic_api.search(title, limit=3)
-        
-        # 如果没找到或没有PDF，尝试 arXiv
+        # 先尝试 Semantic Scholar（优先）
+        papers = self.semantic_api.search(title, limit=5)
+
+        # 如果没找到或没有可用PDF，再尝试 arXiv（仅作为兜底）
         if not papers or not any(p.pdf_url for p in papers):
-            arxiv_papers = self.arxiv_api.search(title, max_results=3)
+            arxiv_papers = self.arxiv_api.search(title, max_results=5)
             papers.extend(arxiv_papers)
         
         if not papers:
             print(f"  ❌ 未找到匹配的论文")
             return None
         
-        # 找到最佳匹配（有PDF的优先）
-        best = None
-        for p in papers:
-            if p.pdf_url:
-                best = p
-                break
-        
-        if not best:
-            best = papers[0]
+        # 基于“标题相似度 + token覆盖率”选最佳候选，避免下载到无关论文
+        with_pdf = [p for p in papers if p.pdf_url]
+        candidates = with_pdf if with_pdf else papers
+        best = max(
+            candidates,
+            key=lambda p: (self._title_similarity(title, p.title) + self._token_coverage(title, p.title)) / 2,
+        )
+        best_sim = self._title_similarity(title, best.title)
+        best_cov = self._token_coverage(title, best.title)
+        best_score = (best_sim + best_cov) / 2
+
+        if best_score < 0.72 or best_cov < 0.7:
+            print(
+                f"  ❌ 候选标题匹配度过低(sim={best_sim:.2f}, cov={best_cov:.2f})，跳过: {best.title}"
+            )
+            return None
+
+        if not best.pdf_url:
             print(f"  ⚠️  找到论文但无开放PDF: {best.title}")
             return best
-        
+
         return best
     
     def download_pdf(self, paper: Paper, subfolder: str = "") -> bool:
@@ -259,6 +328,12 @@ class PaperDownloader:
     
     def process_single(self, title: str, subfolder: str = "") -> bool:
         """处理单篇论文"""
+        existing = self._find_existing_pdf(title, subfolder=subfolder)
+        if existing:
+            print(f"\n✅ 已存在(匹配): {existing.name}")
+            self.downloaded.append(title)
+            return True
+
         paper = self.search_paper(title)
         if paper:
             success = self.download_pdf(paper, subfolder)
@@ -304,7 +379,20 @@ def parse_readme_for_papers(readme_path: str) -> list[tuple[str, str]]:
     with open(readme_path, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    papers = []
+    def extract_title(markdown_line: str) -> Optional[str]:
+        # 去掉开头的 "- "
+        item = markdown_line[2:].strip()
+        # 去掉形如 [待下载] 的标记
+        item = re.sub(r'\s*\[[^\]]+\]\s*', ' ', item).strip()
+        # 仅保留标题部分（去掉后面的描述）
+        item = item.split(' - ')[0].strip()
+        # 去掉末尾包含年份的括号，例如 "(2019)"、"(Meta, 2024)"、"(Akbarpour & Li, 2020)"
+        item = re.sub(r'\s*\([^)]*\d{4}[^)]*\)\s*$', '', item).strip()
+        if len(item) <= 5:
+            return None
+        return item
+
+    papers: list[tuple[str, str]] = []
     current_section = ""
     
     lines = content.split('\n')
@@ -317,14 +405,11 @@ def parse_readme_for_papers(readme_path: str) -> list[tuple[str, str]]:
             continue
         
         # 解析论文行: - 论文标题 (年份) - 描述
-        # 跳过已标记为[待下载]的论文（它们已经在目录中匹配失败）
-        if line.startswith('- ') and '[待下载]' not in line:
-            # 提取论文标题（在第一个括号之前的部分）
-            paper_match = re.match(r'^- (.+?)\s*\(', line)
-            if paper_match and current_section:
-                title = paper_match.group(1).strip()
-                if len(title) > 5:  # 过滤太短的
-                    papers.append((title, current_section))
+        # 允许包含 [待下载] 的条目（用于重试下载/补全）
+        if line.startswith('- ') and current_section:
+            title = extract_title(line)
+            if title:
+                papers.append((title, current_section))
     
     return papers
 
