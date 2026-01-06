@@ -95,7 +95,7 @@
 ### 4.1 大规模博弈 ⭐新增
 - Mean Field Multi-Agent Reinforcement Learning (2018) - 大规模多智能体平均场方法
 - MESOB: Balancing Equilibria & Social Optimality in Ad Auctions (2023) - 平均场双目标优化
-- Learning in Repeated Auctions with Budgets (2019) - 预算约束下重复拍卖的遗憾最小化
+- Budget Pacing in Repeated Auctions: Regret and Efficiency without Convergence (2022) - 重复拍卖中的预算pacing：遗憾与效率分析
 - Learning to Bid in Repeated First-Price Auctions with Budgets (2023) - 第一价格重复拍卖下的预算约束学习出价
 
 ### 4.2 多智能体RL
