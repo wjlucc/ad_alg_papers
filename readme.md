@@ -4,14 +4,14 @@
 
 ## 📊 概览
 
-**已下载**: 43 篇 | **待下载**: 3 篇 | **分类**: 5大板块 | **更新**: 2026.01
+**已下载**: 55 篇 | **待下载**: 3 篇 | **分类**: 5大板块 | **更新**: 2026.01
 
 | 板块 | 已下载 | 关键词 |
 |------|--------|--------|
-| 1. 竞价策略 | 18篇 | RL-RTB、预算分配、pacing、反馈控制、离线评估、生成式 |
-| 2. 拍卖机制设计 | 12篇 | 自动竞价机制、RegretNet/GemNet、隐私、多目标 |
-| 3. LLM与经济代理 | 3篇 | LLM拍卖/机制设计、信息披露模拟、经济仿真 |
-| 4. 博弈论基础 | 5篇 | MARL、Mean Field Games、重复拍卖、预算约束 |
+| 1. 竞价策略 | 23篇 | RL-RTB、预算分配、pacing、反馈控制、离线评估、生成式 |
+| 2. 拍卖机制设计 | 14篇 | 自动竞价机制、RegretNet/GemNet、隐私、多目标 |
+| 3. LLM与经济代理 | 6篇 | LLM拍卖/机制设计、信息披露模拟、经济仿真 |
+| 4. 博弈论基础 | 7篇 | MARL、Mean Field Games、重复拍卖、预算约束 |
 | 5. 基准与综述 | 5篇 | AuctionNet、iPinYou、Auto-bidding综述、pacing指南 |
 
 > 📌 标记 `[待下载]` 的论文暂未找到开放PDF，需要自行通过机构订阅/作者主页等获取
@@ -34,9 +34,12 @@
 
 ### 1.3 生成式竞价
 - Generative Auto-Bidding with Value-Guided Explorations (2025) - 价值引导的生成式自动出价
+- GAS: Generative Auto-bidding with Post-Training Search (2025) - Decision Transformer + Post-Training Search的生成式出价路线
+- HALO: Hindsight-Augmented Learning for Online Auto-Bidding (2025) - Hindsight Sampling解决多约束泛化/数据稀疏问题
 - EGA-V2: An End-to-end Generative Framework for Industrial Advertising (2025) - 创意+出价+分配统一端到端框架
 
 ### 1.4 离线RL与反事实评估 ⭐新增
+- BCOL: Budgeting Counterfactual for Offline RL (2024) - 偏差预算(Deviation Budget)控制OOD风险的安全离线RL
 - Off-Policy Evaluation and Counterfactual Methods in Dynamic Auction Environments (2025) - 动态拍卖环境的反事实评估方法
 - Hierarchical Multi-Agent Meta-Reinforcement Learning for Cross-Channel Bidding (2024) - 跨渠道预算分配的层次化MARL
 
@@ -51,6 +54,10 @@
 - Autobidders with Budget and ROI Constraints: Efficiency, Regret, and Pacing Dynamics (2023) - 预算/ROI约束下的pacing动态与效率分析
 - The Parity Ray Regularizer for Pacing in Auction Markets (2021) - pacing的稳定性/可控性正则化方法
 - Percentile Risk-Constrained Budget Pacing for Guaranteed Display Advertising in Online Optimization (2023) - 保量广告的风险约束pacing
+
+### 1.7 延迟反馈建模 ⭐新增
+- A Nonparametric Delayed Feedback Model for Conversion Rate Prediction (2018) - 延迟反馈(Censored)下的CVR估计
+- Delayed Feedback Modeling for the Entire Space Conversion Rate Prediction (2020) - ESDF/Entire Space延迟反馈建模
 
 ---
 
@@ -69,7 +76,9 @@
 
 ### 2.2 深度机制设计
 - Optimal Auctions through Deep Learning (2019) - RegretNet，可微经济学奠基之作
+- Mode Connectivity in Auction Design (2025) - 神经机制设计理论：解释神经拍卖解的可连通性
 - GemNet: Menu-Based Strategy-Proof Multi-Bidder Auctions (2024) - 基于菜单的防策略拍卖
+- BundleFlow: Deep Menus for Combinatorial Auctions (2025) - Flow/扩散式优化生成组合拍卖菜单
 
 ### 2.3 多目标与隐私 ⭐新增
 - Optimising Trade-offs Among Stakeholders in Ad Auctions (2014) - 广告拍卖中多方利益权衡优化
@@ -83,8 +92,11 @@
 ### 3.1 LLM机制设计
 - InfoBid: A Simulation Framework for Studying Information Disclosure in Auctions with Large Language Model-based Agents (2025) - LLM代理模拟拍卖信息披露策略
 - Mechanism Design for Large Language Models (2024) - Token级拍卖机制
+- Ad Auctions for LLMs via Retrieval Augmented Generation (2024) - RAG Auction/段落级拍卖
+- LLM-Auction: Generative Auction towards LLM-Native Advertising (2025) - IRPO：将拍卖机制转化为LLM偏好对齐问题
 
 ### 3.2 代理行为模拟
+- RTBAgent: A LLM-based Agent System for Real-Time Bidding (2025) - LLM直接参与实时出价决策的Agent系统
 - LLM Economist: Large Population Models and Mechanism Design in Multi-Agent Generative Simulacra (2025) - 利用LLM模拟税收政策和经济行为
 
 ---
@@ -97,6 +109,8 @@
 - MESOB: Balancing Equilibria & Social Optimality in Ad Auctions (2023) - 平均场双目标优化
 - Budget Pacing in Repeated Auctions: Regret and Efficiency without Convergence (2022) - 重复拍卖中的预算pacing：遗憾与效率分析
 - Learning to Bid in Repeated First-Price Auctions with Budgets (2023) - 第一价格重复拍卖下的预算约束学习出价
+- Online Ad Procurement in Non-stationary Autobidding Worlds (2023) - 非平稳环境下的在线采购/自动出价
+- No-Regret Online Autobidding Algorithms in First-price Auctions (2025) - ROI约束一价拍卖下的无悔学习与遗憾界
 
 ### 4.2 多智能体RL
 - Multi-Agent Cooperative Bidding Games (MACG) (2021) - 电商赞助搜索多智能体合作出价
@@ -122,10 +136,10 @@
 
 ```
 Ad_Bidding_Auction_Mechanisms/
-├── 1_竞价策略/           (18篇)
-├── 2_拍卖机制设计/        (12篇)
-├── 3_LLM与经济代理/       (3篇)
-├── 4_博弈论基础/          (5篇)
+├── 1_竞价策略/           (23篇)
+├── 2_拍卖机制设计/        (14篇)
+├── 3_LLM与经济代理/       (6篇)
+├── 4_博弈论基础/          (7篇)
 └── 5_基准与综述/          (5篇)
 ```
 
