@@ -4,15 +4,15 @@
 
 ## 📊 概览
 
-**已下载**: 55 篇 | **待下载**: 3 篇 | **分类**: 5大板块 | **更新**: 2026.01
+**已下载**: 68 篇 | **待下载**: 6 篇 | **分类**: 5大板块 | **更新**: 2026.01
 
 | 板块 | 已下载 | 关键词 |
 |------|--------|--------|
-| 1. 竞价策略 | 23篇 | RL-RTB、预算分配、pacing、反馈控制、离线评估、生成式 |
-| 2. 拍卖机制设计 | 14篇 | 自动竞价机制、RegretNet/GemNet、隐私、多目标 |
+| 1. 竞价策略 | 31篇 | RL-RTB、预算分配、pacing、反馈控制、离线评估、生成式 |
+| 2. 拍卖机制设计 | 17篇 | 自动竞价机制、RegretNet/GemNet、隐私、多目标 |
 | 3. LLM与经济代理 | 6篇 | LLM拍卖/机制设计、信息披露模拟、经济仿真 |
 | 4. 博弈论基础 | 7篇 | MARL、Mean Field Games、重复拍卖、预算约束 |
-| 5. 基准与综述 | 5篇 | AuctionNet、iPinYou、Auto-bidding综述、pacing指南 |
+| 5. 基准与综述 | 7篇 | AuctionNet、iPinYou、Auto-bidding综述、pacing指南 |
 
 > 📌 标记 `[待下载]` 的论文暂未找到开放PDF，需要自行通过机构订阅/作者主页等获取
 
@@ -45,19 +45,31 @@
 
 ### 1.5 RTB强化学习 ⭐新增
 - Real-Time Bidding by Reinforcement Learning in Display Advertising (2017) - 经典DRL-RTB出价框架
+- Bidding Machine: Learning to Bid for Directly Optimizing Profits in Display Advertising (2018) - 经典“出价机器”框架：端到端利润优化
 - Real-Time Bidding with Multi-Agent Reinforcement Learning in Display Advertising (2018) - 多智能体RTB出价
 - Multi-Objective Actor-Critics for Real-Time Bidding in Display Advertising (2020) - 多目标(ROI/CTR等)出价策略学习
 - Functional Optimization Reinforcement Learning for Real-Time Bidding (2022) - 函数优化视角的RTB强化学习
 - Deep Reinforcement Learning for Sponsored Search Real-time Bidding (2018) - 赞助搜索RTB出价
 
 ### 1.6 Budget Pacing ⭐新增
-- Autobidders with Budget and ROI Constraints: Efficiency, Regret, and Pacing Dynamics (2023) - 预算/ROI约束下的pacing动态与效率分析
+- Budget Pacing for Targeted Online Advertisements at LinkedIn (2014) - 工业级pacing系统经典（暂无开放PDF）`[待下载]`
 - The Parity Ray Regularizer for Pacing in Auction Markets (2021) - pacing的稳定性/可控性正则化方法
+- Pacing Equilibrium in First-Price Auction Markets (2022) - FPA语境下的pacing equilibrium理论里程碑
+- Analysis of a Learning Based Algorithm for Budget Pacing (2022) - 学习pacing multiplier的性质与收敛分析
+- Robust Budget Pacing with a Single Sample (2023) - 单样本鲁棒pacing：样本复杂度与稳健性
+- Autobidders with Budget and ROI Constraints: Efficiency, Regret, and Pacing Dynamics (2023) - 预算/ROI约束下的pacing动态与效率分析
 - Percentile Risk-Constrained Budget Pacing for Guaranteed Display Advertising in Online Optimization (2023) - 保量广告的风险约束pacing
+- Mystique: A Budget Pacing System for Performance Optimization in Online Advertising (2024) - 工业级pacing系统化实践（暂无开放PDF）`[待下载]`
 
 ### 1.7 延迟反馈建模 ⭐新增
 - A Nonparametric Delayed Feedback Model for Conversion Rate Prediction (2018) - 延迟反馈(Censored)下的CVR估计
 - Delayed Feedback Modeling for the Entire Space Conversion Rate Prediction (2020) - ESDF/Entire Space延迟反馈建模
+
+### 1.8 一价拍卖与Bid Shading ⭐新增
+- Bid Shading in the Brave New World of First-Price Auctions (2020) - FPA迁移后的bid shading代表作
+- Bid Shading by Win-Rate Estimation and Surplus Maximization (2020) - win-rate估计 + surplus最大化的shading框架
+- An Efficient Deep Distribution Network for Bid Shading in First-Price Auctions (2021) - 分布建模的bid shading方法
+- Strategic Bid Shading in Real-Time Bidding (2025) - 博弈视角的策略性bid shading（Minority Game）
 
 ---
 
@@ -70,18 +82,21 @@
 - Risk-Averse and Optimistic Advertiser Incentive Compatibility in Auto-bidding (2025) - 自动竞价激励相容性
 - Robust Auction Design in the Auto-bidding World (2021) - 鲁棒性拍卖机制设计
 - Incentive Compatibility in the Auto-bidding World (2023) - 自动出价世界的激励相容性分析
+- Vulnerabilities of Single-Round Incentive Compatibility in Auto-bidding: Theory and Evidence from ROI-Constrained Online Advertising Markets (2024) - 单轮IC在自动出价下的脆弱性：理论+实证
 - Incentive Mechanism Design for ROI-constrained Auto-bidding (2020) - ROI约束下的激励机制设计
 - Mechanism Design for Ad Auctions with Display Prices (2023) - 带展示价/提示价的广告拍卖机制
 - Efficiency of non-truthful auctions under auto-bidding (2022) - 自动出价下非真实拍卖的效率分析
 
 ### 2.2 深度机制设计
 - Optimal Auctions through Deep Learning (2019) - RegretNet，可微经济学奠基之作
+- Neural Auction: End-to-End Learning of Auction Mechanisms for E-Commerce Advertising (2021) - 广告/电商语境下的端到端神经拍卖
 - Mode Connectivity in Auction Design (2025) - 神经机制设计理论：解释神经拍卖解的可连通性
 - GemNet: Menu-Based Strategy-Proof Multi-Bidder Auctions (2024) - 基于菜单的防策略拍卖
 - BundleFlow: Deep Menus for Combinatorial Auctions (2025) - Flow/扩散式优化生成组合拍卖菜单
 
-### 2.3 多目标与隐私 ⭐新增
+### 2.3 多目标/偏好与隐私 ⭐新增
 - Optimising Trade-offs Among Stakeholders in Ad Auctions (2014) - 广告拍卖中多方利益权衡优化
+- PreferenceNet: Encoding Human Preferences in Auction Design with Deep Learning (2021) - 将偏好/约束作为一等公民融入神经拍卖设计
 - Differentially Private Machine Learning-powered Combinatorial Auction Design (2024) - 差分隐私组合拍卖设计
 
 ---
@@ -108,6 +123,7 @@
 - Mean Field Multi-Agent Reinforcement Learning (2018) - 大规模多智能体平均场方法
 - MESOB: Balancing Equilibria & Social Optimality in Ad Auctions (2023) - 平均场双目标优化
 - Budget Pacing in Repeated Auctions: Regret and Efficiency without Convergence (2022) - 重复拍卖中的预算pacing：遗憾与效率分析
+- Learning in Repeated Auctions with Budgets: Regret Minimization and Equilibrium (2017) - budget pacing/学习的理论基础（暂无开放PDF）`[待下载]`
 - Learning to Bid in Repeated First-Price Auctions with Budgets (2023) - 第一价格重复拍卖下的预算约束学习出价
 - Online Ad Procurement in Non-stationary Autobidding Worlds (2023) - 非平稳环境下的在线采购/自动出价
 - No-Regret Online Autobidding Algorithms in First-price Auctions (2025) - ROI约束一价拍卖下的无悔学习与遗憾界
@@ -127,7 +143,9 @@
 - Real-Time Bidding Benchmarking with iPinYou Dataset (2014) - RTB公开数据集与基准复现
 - BAT: Benchmark for Auto-bidding Task (2025) - 自动出价任务基准与评测协议
 - Auto-Bidding and Auctions in Online Advertising: A Survey (2024) - 自动出价与广告拍卖综述
+- A Survey of Online Auction Mechanism Design Using Deep Learning Approaches (2021) - 深度学习拍卖/机制设计综述
 - A Practical Guide to Budget Pacing Algorithms in Digital Advertising (2025) - pacing算法实践综述/指南
+- A Field Guide for Pacing Budget and ROS Constraints (2024) - pacing算法与ROS/预算约束的对比指南
 - Automated Mechanism Design (Sandholm, 2003) - 自动化机制设计经典综述（暂无开放PDF）`[待下载]`
 
 ---
@@ -136,11 +154,11 @@
 
 ```
 Ad_Bidding_Auction_Mechanisms/
-├── 1_竞价策略/           (23篇)
-├── 2_拍卖机制设计/        (14篇)
+├── 1_竞价策略/           (31篇)
+├── 2_拍卖机制设计/        (17篇)
 ├── 3_LLM与经济代理/       (6篇)
 ├── 4_博弈论基础/          (7篇)
-└── 5_基准与综述/          (5篇)
+└── 5_基准与综述/          (7篇)
 ```
 
 ## 论文收集方式
