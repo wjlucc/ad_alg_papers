@@ -4,17 +4,19 @@
 
 ## 📊 概览
 
-**已下载**: 67 篇 | **待下载**: 6 篇 | **分类**: 5大板块 | **更新**: 2026.01
+**已下载**: 87 篇 | **待下载**: 7 篇 | **待核验**: 0 篇 | **分类**: 5大板块 | **更新**: 2026.01
 
 | 板块 | 已下载 | 关键词 |
 |------|--------|--------|
-| 1. 竞价策略 | 31篇 | RL-RTB、预算分配、pacing、反馈控制、离线评估、生成式 |
-| 2. 拍卖机制设计 | 16篇 | 自动竞价机制、RegretNet/GemNet、隐私、多目标 |
-| 3. LLM与经济代理 | 6篇 | LLM拍卖/机制设计、信息披露模拟、经济仿真 |
-| 4. 博弈论基础 | 7篇 | MARL、Mean Field Games、重复拍卖、预算约束 |
-| 5. 基准与综述 | 7篇 | AuctionNet、iPinYou、Auto-bidding综述、pacing指南 |
+| 1. 竞价策略 | 39篇 | RL-RTB、预算分配、pacing、反馈控制、离线评估、生成式 |
+| 2. 拍卖机制设计 | 20篇 | 自动竞价机制、RegretNet/GemNet、隐私、多目标 |
+| 3. LLM与经济代理 | 10篇 | LLM拍卖/机制设计、信息披露模拟、经济仿真 |
+| 4. 博弈论基础 | 9篇 | MARL、Mean Field Games、重复拍卖、预算约束 |
+| 5. 基准与综述 | 9篇 | AuctionNet、iPinYou、Auto-bidding综述、pacing指南 |
 
-> 📌 标记 `[待下载]` 的论文暂未找到开放PDF，需要自行通过机构订阅/作者主页等获取
+> 📌 标记 `待下载` 的论文暂未落盘PDF（包含“公开可下载但未下载”与“可能需订阅/作者主页获取”等情况）
+>
+> 🧪 标记 `待核验` 的论文需要先补齐“标题/作者/年份/arXiv/DOI”等关键信息，再落盘与写入稳定链接
 
 ---
 
@@ -37,6 +39,11 @@
 - Joint optimization of bid and budget allocation in sponsored search (2012) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/Joint_optimization_of_bid_and_budget_allocation_in_sponsored_search.pdf) - 赞助搜索中出价与预算联合优化
   - 同时优化出价与预算分配的早期经典，面向赞助搜索的投放约束与收益目标。
   - 有助理解后续pacing/auto-bidding系统为何要“bid+budget”联动设计。
+- ROI-Constrained Bidding via Curriculum-Guided Bayesian Reinforcement Learning (KDD 2022) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/ROI-Constrained_Bidding_via_Curriculum-Guided_Bayesian_Reinforcement_Learning.pdf) - ROI约束竞价：课程引导的贝叶斯强化学习
+  - 面向ROI约束下的自动出价，强调用curriculum/贝叶斯RL提升训练稳定性与约束满足。
+- A Unified Solution to Constrained Bidding in Online Display Advertising (KDD 2021) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/A_Unified_Solution_to_Constrained_Bidding_in_Online_Display_Advertising.pdf) - 约束竞价统一框架（USCB）
+  - 统一推出价函数：仅用 m 个参数覆盖 m 个约束（预算 + KPI 上界等）。
+  - 提出 RL 动态调参应对非平稳拍卖环境，并在阿里展示广告平台落地。
 
 ### 1.2 反馈控制
 - Feedback Control of Real-Time Display Advertising (2016) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/Feedback_Control_of_Real-Time_Display_Advertising.pdf) - 经典PID反馈控制RTB论文
@@ -47,29 +54,41 @@
   - 有助理解平台侧收益管理与库存分配的价格机制。
 
 ### 1.3 生成式竞价
+- AIGB: Generative Auto-bidding via Conditional Diffusion Modeling (2024) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/AIGB_Generative_Auto-bidding_via_Conditional_Diffusion_Modeling.pdf) - 条件扩散的生成式自动出价
+  - 将自动出价建模为条件生成问题，论文方法名为DiffBid，用扩散模型生成策略/轨迹以满足预算与KPI约束。
 - Generative Auto-Bidding with Value-Guided Explorations (2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/Generative_Auto-Bidding_with_Value-Guided_Explorations.pdf) - 价值引导的生成式自动出价
   - 用生成式策略直接产生出价轨迹，并用价值信号引导探索/性能提升。
-  - 可与DiffBid/GAS/HALO对照，理解“生成式出价”不同技术路线。
+  - 可与AIGB(DiffBid)/GAS/HALO对照，理解“生成式出价”不同技术路线。
 - GAS: Generative Auto-bidding with Post-Training Search (2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/GAS_Generative_Auto-bidding_with_Post-training_Search.pdf) - Decision Transformer + Post-Training Search的生成式出价路线
   - Decision Transformer学轨迹，推理阶段用Post-Training Search做策略改进与可控探索。
   - 代表“Transformer + Search”的生成式出价范式。
 - HALO: Hindsight-Augmented Learning for Online Auto-Bidding (2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/HALO_Hindsight-Augmented_Learning_for_Online_Auto-Bidding.pdf) - Hindsight Sampling解决多约束泛化/数据稀疏问题
   - 通过Hindsight Sampling把稀疏/多约束数据转为可学习信号，提升泛化能力。
   - 工业多约束（ROI/预算/出价上限）场景很有借鉴价值。
+- Generative Auto-Bidding in Large-Scale Competitive Auctions via Diffusion Completer-Aligner (2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/Generative_Auto-Bidding_in_Large-Scale_Competitive_Auctions_via_Diffusion_Completer-Aligner.pdf) - Diffusion Completer-Aligner架构
+  - 在大规模竞争拍卖中用“补全-对齐”结构提升生成轨迹的可行性与约束一致性。
 - EGA-V2: An End-to-end Generative Framework for Industrial Advertising (2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/EGA-V2_An_End-to-end_Generative_Framework_for_Industrial_Advertising.pdf) - 创意+出价+分配统一端到端框架
   - 端到端生成式框架将创意、出价与分配等环节统一建模（“生成式投放”）。
   - 适合作为生成模型/大模型进入广告决策的系统化参考。
 
 ### 1.4 离线RL与反事实评估 ⭐新增
+- Offline Reinforcement Learning for Optimizing Production Bidding Policies (arXiv 2023, Meta) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/Offline_Reinforcement_Learning_for_Optimizing_Production_Bidding_Policies.pdf) - 工业出价策略的离线RL优化
+  - 用离线RL在不引入高风险在线探索的前提下优化生产出价策略（强调可解释与可控部署）。
+- Adaptive Risk-Aware Bidding with Budget Constraint in Display Advertising (arXiv 2022) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/Adaptive_Risk-Aware_Bidding_with_Budget_Constraint_in_Display_Advertising.pdf) - 风险敏感+预算约束出价
+  - 将风险/不确定性纳入预算约束竞价策略，适合与pacing/约束RL对照阅读。
 - BCOL: Budgeting Counterfactual for Offline RL (2024) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/BCOL_Budgeting_Counterfactual_for_Offline_RL.pdf) - 偏差预算(Deviation Budget)控制OOD风险的安全离线RL
   - 以“偏差预算/Deviation Budget”约束控制离线RL策略偏离日志数据的风险（更安全可控）。
   - 适合用于离线出价/投放决策的OOD鲁棒性与上线安全讨论。
 - Off-Policy Evaluation and Counterfactual Methods in Dynamic Auction Environments (2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/Off-Policy_Evaluation_and_Counterfactual_Methods_in_Dynamic_Auction_Environments.pdf) - 动态拍卖环境的反事实评估方法
   - 聚焦动态拍卖中的离线评估（OPE）与反事实估计，为“离线选策略/安全上线”提供工具。
   - 可与bid shading、auto-bidding的离线仿真评测结合使用。
+- Auto-bidding in real-time auctions via Oracle Imitation Learning (OIL) (KDD 2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/Auto-bidding_in_real-time_auctions_via_Oracle_Imitation_Learning.pdf) - Oracle imitation + 离线策略学习
+  - 用“oracle/专家解”形式把复杂约束与优化结构蒸馏进可部署策略，偏离线/模仿学习路线。
 - Hierarchical Multi-Agent Meta-Reinforcement Learning for Cross-Channel Bidding (2024) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/Hierarchical_Multi-Agent_Meta-Reinforcement_Learning_for_Cross-Channel_Bidding.pdf) - 跨渠道预算分配的层次化MARL
   - 分层+元学习用于跨渠道投放：上层分配预算/资源，下层学习各渠道竞价策略。
   - 适合参考“多渠道系统”如何做可扩展的RL架构设计。
+- MTORL: Multi-task Offline Reinforcement Learning for Online Advertising in Recommender Systems (2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/MTORL_Multi-task_Offline_Reinforcement_Learning_for_Online_Advertising.pdf) - 多任务离线RL（推荐×出价耦合）
+  - 讨论推荐与出价耦合时的联合优化问题；若你只想保留“纯竞价”，可后续再剥离。
 
 ### 1.5 RTB强化学习 ⭐新增
 - Real-Time Bidding by Reinforcement Learning in Display Advertising (2017) [[PDF]](Ad_Bidding_Auction_Mechanisms/1_竞价策略/Real-Time_Bidding_by_Reinforcement_Learning_in_Display_Advertising.pdf) - 经典DRL-RTB出价框架
@@ -145,6 +164,8 @@
 **视角**: 平台方/SSP | **核心问题**: 激励相容的规则设计
 
 ### 2.1 自动竞价环境机制
+- Contextual Generative Auction (KDD 2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/2_拍卖机制设计/Contextual_Generative_Auction.pdf) - 生成式拍卖/置换级外部性 + DSIC
+  - 关注复杂外部性下的分配与激励相容，属于“广告拍卖机制”前沿代表作。
 - Truthful Auctions for Automated Bidding in Online Advertising (2023) [[PDF]](Ad_Bidding_Auction_Mechanisms/2_拍卖机制设计/Truthful_Auctions_for_Automated_Bidding_in_Online_Advertising.pdf) - 私有约束（预算/ROI）下的真实拍卖设计（arXiv:2301.13020）
   - 将广告主私有约束（预算/ROI等）纳入拍卖设计，给出满足约束维度激励的真实机制。
   - 常被一些列表称为“Designing Ad Auctions with Private Constraints…”；建议统一以该论文为准。
@@ -169,8 +190,12 @@
 - Efficiency of non-truthful auctions under auto-bidding (2022) [[PDF]](Ad_Bidding_Auction_Mechanisms/2_拍卖机制设计/Efficiency_of_non-truthful_auctions_under_auto-bidding.pdf) - 自动出价下非真实拍卖的效率分析
   - 分析非真实拍卖在auto-bidding下的效率损失与均衡性质，贴近真实市场规则。
   - 为平台选择FPA/SPA/变体规则提供理论依据。
+- On Designing the Optimal Integrated Ad Auction in E-commerce Platforms (AAAI 2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/2_拍卖机制设计/On_Designing_the_Optimal_Integrated_Ad_Auction_in_E-Commerce_Platforms.pdf) - 集成式拍卖/分配规则设计
+  - 更贴近工业系统“排序+拍卖/位置分配”耦合的整体规则设计视角。
 
 ### 2.2 深度机制设计
+- Deep Automated Mechanism Design for Ad Auction (SIGIR 2024) [[PDF]](Ad_Bidding_Auction_Mechanisms/2_拍卖机制设计/Deep_Automated_Mechanism_Design_for_Ad_Auction.pdf) - 工业广告场景的深度自动化机制设计
+  - 面向广告分配/拍卖规则的端到端学习与约束处理，偏工业落地路线。
 - Optimal Auctions through Deep Learning (2019) [[PDF]](Ad_Bidding_Auction_Mechanisms/2_拍卖机制设计/Optimal_Auctions_through_Deep_Learning.pdf) - RegretNet，可微经济学奠基之作
   - 用神经网络参数化机制（分配/支付），并通过regret惩罚实现近似IC的端到端学习。
   - 深度机制设计入门核心，后续GemNet/PreferenceNet/BundleFlow均可对照。
@@ -186,8 +211,13 @@
 - BundleFlow: Deep Menus for Combinatorial Auctions (2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/2_拍卖机制设计/BundleFlow_Deep_Menus_for_Combinatorial_Auctions.pdf) - 大规模组合拍卖的深度菜单生成
   - 用流匹配/扩散式优化生成高维组合拍卖菜单，绕开枚举组合的计算瓶颈。
   - 组合拍卖SOTA路线之一，可与DP组合拍卖对比。
+- Advancing Differentiable Economics: A Neural Network Framework for Revenue-Maximizing Combinatorial Auction Mechanisms (2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/2_拍卖机制设计/Advancing_Differentiable_Economics_Revenue-Maximizing_Combinatorial_Auction_Mechanisms.pdf) - 收益最大化组合拍卖的神经框架
+  - 组合拍卖方向的可微经济学新进展，适合作为RegretNet/GemNet/BundleFlow的补充对照。
 
 ### 2.3 多目标/偏好与隐私 ⭐新增
+- A practical multi-objective auction design and optimization framework for sponsored search (ORL 2023) - 工业多目标拍卖实践 `[待下载]`
+  - 多目标权衡（平台/广告主/用户体验等）+ 工业A/B实践，是2.3板块的重要“落地代表”。
+  - DOI：https://doi.org/10.1016/j.orl.2023.09.001
 - Optimising Trade-offs Among Stakeholders in Ad Auctions (2014) [[PDF]](Ad_Bidding_Auction_Mechanisms/2_拍卖机制设计/Optimising_Trade-offs_Among_Stakeholders_in_Ad_Auctions.pdf) - 广告拍卖中多方利益权衡优化
   - 多目标广告拍卖经典：在平台收益、用户体验（点击）与广告主福利之间做权衡。
   - 为后续公平/偏好/多目标机制学习提供早期基线。
@@ -204,23 +234,33 @@
 **视角**: AI Agent作为经济主体 | **核心问题**: LLM如何改变机制设计
 
 ### 3.1 LLM机制设计
+- Auctions with LLM Summaries (arXiv 2024) [[PDF]](Ad_Bidding_Auction_Mechanisms/3_LLM与经济代理/Auctions_with_LLM_Summaries.pdf) - 用LLM摘要影响拍卖/机制结果的分析
+  - 关注“信息结构/信息披露”在拍卖中的作用，与平台侧展示价/提示价等方向呼应。
 - InfoBid: A Simulation Framework for Studying Information Disclosure in Auctions with Large Language Model-based Agents (2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/3_LLM与经济代理/InfoBid_A_Simulation_Framework_for_Studying_Information_Disclosure_in_Auctions_with_Large_Language_Model-based_Agents.pdf) - LLM代理信息披露仿真
   - 提供LLM代理拍卖仿真框架，用于研究不同信息披露策略下的竞价/均衡变化。
   - 适合作为“LLM代理 + 机制设计”的可控实验基准。
 - Mechanism Design for Large Language Models (2024) [[PDF]](Ad_Bidding_Auction_Mechanisms/3_LLM与经济代理/Mechanism_Design_for_Large_Language_Models.pdf) - LLM原生场景的机制设计
   - 面向LLM生态中的分配/定价/激励问题（如token级机制）的机制设计框架与讨论。
   - 为“生成式广告/LLM拍卖”提供理论工具箱。
+- Truthful Aggregation of LLMs (arXiv 2024) [[PDF]](Ad_Bidding_Auction_Mechanisms/3_LLM与经济代理/Truthful_Aggregation_of_LLMs.pdf) - LLM集合/聚合的激励与真实性
+  - 关注“聚合多个LLM输出”的机制设计与激励问题，可与LLM-native广告/竞价接口对照。
 - Ad Auctions for LLMs via Retrieval Augmented Generation (2024) [[PDF]](Ad_Bidding_Auction_Mechanisms/3_LLM与经济代理/Ad_Auctions_for_LLMs_via_Retrieval_Augmented_Generation.pdf) - RAG Auction/段落级拍卖
   - 提出RAG Auction：把检索候选与竞价定价嵌入生成式内容流程，实现段落级广告分配。
   - LLM商业化变现（生成式搜索广告）核心参考之一。
 - LLM-Auction: Generative Auction towards LLM-Native Advertising (2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/3_LLM与经济代理/LLM-Auction_Generative_Auction_towards_LLM-Native_Advertising.pdf) - IRPO：将拍卖机制转化为LLM偏好对齐问题
   - 将广告分配/定价视为LLM偏好对齐问题，提出IRPO等训练方法实现端到端生成式拍卖。
   - 与传统机制设计形成“对齐/奖励建模”新连接。
+- Online Advertisements with LLMs (SIGecom 2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/3_LLM与经济代理/Online_Advertisements_with_LLMs.pdf) - LLM广告系统框架（含竞价/拍卖）
+  - 覆盖LLM驱动广告生态的系统视角（包含拍卖/竞价的接口与形态），适合作为板块导读。
+  - PDF：http://www.sigecom.org/exchanges/volume_22/2/FEIZI.pdf
 
 ### 3.2 代理行为模拟
 - RTBAgent: A LLM-based Agent System for Real-Time Bidding (2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/3_LLM与经济代理/RTBAgent_A_LLM-based_Agent_System_for_Real-Time_Bidding.pdf) - LLM直接参与实时出价决策的Agent系统
   - 让LLM直接参与RTB决策：工具调用、记忆检索、两阶段决策等系统化组件。
   - 偏工程实现，适合参考AI Agent出价系统的模块拆分与评测方式。
+- Large Language Models as Simulated Economic Agents: What Can We Learn from Homo Silicus? (NBER 2023) [[PDF]](Ad_Bidding_Auction_Mechanisms/3_LLM与经济代理/Large_Language_Models_as_Simulated_Economic_Agents_Homo_Silicus.pdf) - LLM经济代理（Homo Silicus）
+  - 以LLM模拟经济主体，适合用作“机制/拍卖在LLM代理参与下会发生什么”的方法论参考。
+  - NBER PDF：https://www.nber.org/system/files/working_papers/w31122/w31122.pdf
 - LLM Economist: Large Population Models and Mechanism Design in Multi-Agent Generative Simulacra (2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/3_LLM与经济代理/LLM_Economist_Large_Population_Models_and_Mechanism_Design_in_Multi-Agent_Generative_Simulacra.pdf) - LLM经济仿真与机制评估
   - 用LLM模拟大规模经济主体与政策/机制效果（generative simulacra），用于机制设计实验。
   - 可作为“社会级模拟→机制评估”的方法论参考。
@@ -252,6 +292,8 @@
 - No-Regret Online Autobidding Algorithms in First-price Auctions (2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/4_博弈论基础/No-Regret_Online_Autobidding_Algorithms_in_First-price_Auctions.pdf) - ROI约束一价拍卖下的无悔学习与遗憾界
   - ROI约束FPA下的无悔学习算法与遗憾界，为DSP常见设定提供理论指导。
   - 适合作为“约束 + FPA + 在线学习”的理论主线材料。
+- Comparing Uniform Price and Discriminatory Multi-Unit Auctions through Regret Minimization (NeurIPS 2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/4_博弈论基础/Comparing_Uniform_Price_and_Discriminatory_Multi-Unit_Auctions_through_Regret_Minimization.pdf) - 多单位拍卖的遗憾最小化比较
+  - 用后悔最小化框架比较Uniform Price与Discriminatory等多单位拍卖规则，补齐“多单位+学习”视角。
 
 ### 4.2 多智能体RL
 - A Cooperative-Competitive Multi-Agent Framework for Auto-bidding in Online Advertising (2021) [[PDF]](Ad_Bidding_Auction_Mechanisms/4_博弈论基础/A_Cooperative-Competitive_Multi-Agent_Framework_for_Auto-bidding_in_Online_Advertising.pdf) - 竞争-协作混合范式的多智能体自动出价框架
@@ -262,6 +304,9 @@
 - Credible Mechanisms (Akbarpour & Li, 2020) - 可信机制设计理论（暂无开放PDF）`[待下载]`
   - “可信机制”强调机制设计者的可信承诺：即便想作弊也难以偏离承诺结果（credibility/commitment）。
   - 对鲁棒拍卖、可信拍卖与平台-广告主博弈理解非常重要。
+- Dynamic Threats to Credible Auctions (2025) [[PDF]](Ad_Bidding_Auction_Mechanisms/4_博弈论基础/Dynamic_Threats_to_Credible_Auctions.pdf) - 动态可信拍卖的威胁/边界
+  - 与“可信承诺/可承诺拍卖/动态机制”直接相关，可用于补强4.3板块的现代进展。
+  - IDEAS/RePEc：https://ideas.repec.org/p/arx/papers/2509.21439.html
 
 ---
 
@@ -271,6 +316,12 @@
 - AuctionNet: A Novel Benchmark for Decision-Making in Large-Scale Games (2024) [[PDF]](Ad_Bidding_Auction_Mechanisms/5_基准与综述/AuctionNet_A_Novel_Benchmark_for_Decision-Making_in_Large-Scale_Games.pdf) - 阿里妈妈大规模广告拍卖决策基准
   - 面向大规模博弈/拍卖决策的统一基准，可用于比较auto-bidding/生成式策略等算法。
   - 适合作为DiffBid/BCOL等方法的统一评测平台。
+- AuctionGym: An Open-Source Simulation Environment for RTB (AdKDD 2022 Workshop) [[PDF]](Ad_Bidding_Auction_Mechanisms/5_基准与综述/AuctionGym_An_Open-Source_Simulation_Environment_for_RTB.pdf) - RTB开源仿真环境
+  - 提供可复现的RTB仿真/评测环境，适合作为离线评估与策略对比的工具链补齐。
+  - PDF：https://assets.amazon.science/4f/3c/7f9a5c6c4181894d5e64c684c0d7/learning-to-bid-with-auctiongym.pdf
+- Auto-Bidding in Large-Scale Auctions: Learning Decision-Making in Uncertain and Competitive Games (NeurIPS 2024 Competition) [[PDF]](Ad_Bidding_Auction_Mechanisms/5_基准与综述/Auto-Bidding_in_Large-Scale_Auctions_Learning_Decision-Making_in_Uncertain_and_Competitive_Games.pdf) - 自动竞价竞赛/数据集入口
+  - 大规模广告拍卖决策挑战赛的公开介绍文档，可作为数据集/环境与baseline的入口。
+  - 赛题页：https://neurips.cc/virtual/2024/competition/84793
 - Real-Time Bidding Benchmarking with iPinYou Dataset (2014) [[PDF]](Ad_Bidding_Auction_Mechanisms/5_基准与综述/Real-Time_Bidding_Benchmarking_with_iPinYou_Dataset.pdf) - RTB公开数据集与基准复现
   - iPinYou公开数据集与RTB基准复现，经典离线评测入口。
   - 适合做CTR/CVR+出价策略的复现实验与对比。
@@ -299,11 +350,11 @@
 
 ```
 Ad_Bidding_Auction_Mechanisms/
-├── 1_竞价策略/           (31篇)
-├── 2_拍卖机制设计/        (16篇)
-├── 3_LLM与经济代理/       (6篇)
-├── 4_博弈论基础/          (7篇)
-└── 5_基准与综述/          (7篇)
+├── 1_竞价策略/           (39篇)
+├── 2_拍卖机制设计/        (20篇)
+├── 3_LLM与经济代理/       (10篇)
+├── 4_博弈论基础/          (9篇)
+└── 5_基准与综述/          (9篇)
 ```
 
 ## 论文收集方式
